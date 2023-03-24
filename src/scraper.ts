@@ -7,6 +7,7 @@ import Puppeteer, { launch, LaunchOptions } from 'puppeteer';
 /** Only use .env files when running in dev mode */
 if (!process.env.produtction) config();
 
+/** Scraper */
 export const url = 'https://www.nestoria.de/haus/mieten/stadecken-elsheim?bedrooms=3,4&price_max=1000&price_min=600&radio=10&sort=newest';
 export const itemSpacer = '\n\n';
 

@@ -24,6 +24,7 @@
     "mysql": "^2.18.1",
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.11",
+    "openai": "^3.2.1",
     "puppeteer": "^5.2.1"
   },
   "devDependencies": {

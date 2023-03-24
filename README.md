@@ -1,6 +1,6 @@
-# TypeScript Puppeteer Web Scraper Template
+# TypeScript Openai Puppeteer Web Scraper Template
 
-This is a template repository for building a web scraper using TypeScript and Puppeteer. With this template, you can quickly set up a project structure that includes TypeScript support and Puppeteer dependencies.
+This is a template repository for building a web scraper using Openai, TypeScript and Puppeteer. With this template, you can quickly set up a project structure that includes TypeScript support and Puppeteer dependencies.
 ## Getting Started
 
 To use this template, you can simply click the "Use this template" button on GitHub, or fork the repository to your own account.
