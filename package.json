@@ -21,6 +21,7 @@
   "dependencies": {
     "@types/mysql": "^2.15.15",
     "dotenv": "^8.2.0",
+    "gpt-3-encoder": "^1.1.4",
     "mysql": "^2.18.1",
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.11",
