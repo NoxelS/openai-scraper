@@ -9,13 +9,13 @@ import { MysqlError, Pool } from 'mysql';
  * @param callback Callback function
  * @param pool Pool to use
  */
-function query(query: string, inputs: any[], callback: (error: MysqlError, result: any[]) => void, pool: Pool) {
+export function query(query: string, inputs: any[], callback: (error: MysqlError, result: any[]) => void, pool: Pool) {
     pool.getConnection(function (error, connection) {
         connection.beginTransaction(function (error) {
             if (error) {
                 // Transaction Error (Rollback and release connection)
                 connection.rollback(function () {
-                    connection.release();
+                    connection.destroy();
                     callback(error, []);
                 });
             } else {
@@ -23,18 +23,18 @@ function query(query: string, inputs: any[], callback: (error: MysqlError, resul
                     if (error) {
                         // Query Error (Rollback and release connection)
                         connection.rollback(function () {
-                            connection.release();
+                            connection.destroy();
                             callback(error, []);
                         });
                     } else {
                         connection.commit(function (error) {
                             if (error) {
                                 connection.rollback(function () {
-                                    connection.release();
+                                    connection.destroy();
                                     callback(error, []);
                                 });
                             } else {
-                                connection.release();
+                                connection.destroy();
                                 callback(error, results);
                             }
                         });
