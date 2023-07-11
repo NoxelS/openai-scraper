@@ -7,10 +7,15 @@ import Puppeteer, { launch, LaunchOptions } from 'puppeteer';
 /** Only use .env files when running in dev mode */
 if (!process.env.produtction) config();
 
-/** Scraper */
-export const url = 'https://www.nestoria.de/haus/mieten/stadecken-elsheim?bedrooms=3,4&price_max=1000&price_min=600&radio=10&sort=newest';
-export const itemSpacer = '\n\n';
+export const url = '';
 
+/** 
+ *  @param pool - MySQL connection pool (could also be made global)
+ *  @description  This is the main scraping function. It will be called by the scheduler.
+ *                Make sure to garabage collect the browser instance if running on some
+ *                complicated server structure. The Dockerfile for this project is a good
+ *                example of how to do this.
+ */ 
 async function scrape(pool: Pool) {
     const browser = await Puppeteer.launch(<LaunchOptions>{
         headless: true,
@@ -21,15 +26,27 @@ async function scrape(pool: Pool) {
     const page = await browser.newPage();
     await page.goto(url);
 
-    /** Items are text array of the html <article> node inner text. */
-    const items = await page.evaluate(() => {
-        /** Do stuff with document */
+    /** Examples */
+
+    const documentItems: unknown[] = await page.evaluate(() => {
+        /** Do stuff with document and retrive some HTMLElements */
         return [];
     });
 
-    items.forEach(item => {
-        // DO stuff with items
-    });
+    /** 
+     *  You could take screenshots when facing a document error. 
+     *  This is especially usefult if you scrape a lot of pages and 
+     *  debuging is hard. 
+     */
+    try {
+        // Do stuff
+    } catch (error) {
+        if (error instanceof Error) {
+            /** Save a screenshot if possible */
+            try { await page.screenshot({ path: `log/err-${new Date().getTime()}.png` }) } catch (error) {}
+            console.error(error.message);
+        }
+    }
 
     await browser.close();
 }
@@ -46,8 +63,5 @@ const pool: Pool = createPool(<PoolConfig>{
 const interval = process.env.production ? '*/30 * * * *' : '* * * * *';
 console.log(`Scraping every ${process.env.production ? '15 minutes' : 'minute'}.`);
 
-if (!process.env.production) {
-    scrape(pool);
-}
-
+if (!process.env.production) scrape(pool);
 schedule(interval, () => scrape(pool));
