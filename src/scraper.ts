@@ -35,8 +35,8 @@ async function scrape(pool: Pool) {
 
     /** 
      *  You could take screenshots when facing a document error. 
-     *  This is especially usefult if you scrape a lot of pages and 
-     *  debuging is hard. 
+     *  This is especially usefull if you scrape a lot of pages and 
+     *  debugging is hard. 
      */
     try {
         // Do stuff
