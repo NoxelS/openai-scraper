@@ -5,7 +5,7 @@ import Puppeteer, { launch, LaunchOptions } from 'puppeteer';
 
 
 /** Only use .env files when running in dev mode */
-if (!process.env.produtction) config();
+if (!process.env.production) config();
 
 export const url = '';
 
