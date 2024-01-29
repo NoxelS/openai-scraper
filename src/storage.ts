@@ -9,8 +9,9 @@ import { MysqlError, Pool } from 'mysql';
  * @param callback Callback function
  * @param pool Pool to use
  */
-export function query(query: string, inputs: any[], callback: (error: MysqlError, result: any[]) => void, pool: Pool) {
+export function query(query: string, inputs: any[], callback: (error: MysqlError, result: any[]) => void, pool: Pool) : void {
     pool.getConnection(function (error, connection) {
+        if (error) callback(error, []);
         connection.beginTransaction(function (error) {
             if (error) {
                 // Transaction Error (Rollback and release connection)
