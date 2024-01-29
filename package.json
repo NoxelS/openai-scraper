@@ -26,7 +26,12 @@
     "node-cron": "^2.0.3",
     "nodemailer": "^6.4.11",
     "openai": "^3.2.1",
-    "puppeteer": "^5.2.1"
+    "puppeteer": "^5.2.1",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-adblocker": "^2.13.6",
+    "puppeteer-extra-plugin-anonymize-ua": "^2.4.6",
+    "puppeteer-extra-plugin-recaptcha": "^3.6.8",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",

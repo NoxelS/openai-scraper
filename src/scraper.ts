@@ -1,13 +1,41 @@
 import { config } from 'dotenv';
 import { createPool, Pool, PoolConfig } from 'mysql';
 import { schedule } from 'node-cron';
-import Puppeteer, { launch, LaunchOptions } from 'puppeteer';
+import { LaunchOptions } from 'puppeteer';
+import Puppeteer from 'puppeteer-extra';
 
 
 /** Only use .env files when running in dev mode */
+const isProduction = process.env.production?.toString() === 'true' || process.env.NODE_ENV === 'production';
 if (!process.env.production) config();
 
-export const url = '';
+/** Additional Puppeteer options and plugins */
+const AnonymizeUAPlugin = require('puppeteer-extra-plugin-anonymize-ua'); // Add anonymize user agent plugin (changes user agent to a random one)
+const AdblockerPlugin = require('puppeteer-extra-plugin-adblocker'); // Add adblocker plugin to block all ads and trackers (saves bandwidth)
+const RecaptchaPlugin = require('puppeteer-extra-plugin-recaptcha'); // Add recaptcha plugin (solves recaptchas automagically)
+const StealthPlugin = require('puppeteer-extra-plugin-stealth'); // Add stealth plugin and use defaults (all tricks to hide puppeteer usage)
+
+Puppeteer.use(RecaptchaPlugin({provider: {id: '2captcha',token: process.env.TWO_CAPTCHA_API_KEY }, visualFeedback: true }))
+Puppeteer.use(AnonymizeUAPlugin({ makeWindows: true, stripHeadless: true }))
+Puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
+Puppeteer.use(StealthPlugin());
+
+/** Launch options */
+const launchOptions: LaunchOptions = {
+    headless: isProduction, // Run headless in production mode
+    args: [
+        '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox', '--no-sandbox',
+        '--window-size=1920,1080', /* '--window-position=1920,0' */ // Activate this if you want to have the browser window on a second screen
+    ],
+    ignoreHTTPSErrors: true, 
+    devtools: !isProduction, // Open devtools in development mode
+    slowMo: 0, // Slow down puppeteer operations by X milliseconds (useful for debugging)
+    timeout: 0 // Disable timeouts
+}
+
+
+/** Url to scrape */
+export const url = 'https://bot.sannysoft.com/'; // Example url to test the scraper's fingerprint
 
 /** 
  *  @param pool - MySQL connection pool (could also be made global)
@@ -17,12 +45,7 @@ export const url = '';
  *                example of how to do this.
  */ 
 async function scrape(pool: Pool) {
-    const browser = await Puppeteer.launch(<LaunchOptions>{
-        headless: true,
-        args: ['--no-sandbox', '--disable-gpu'],
-        timeout: 0
-    });
-
+    const browser = await Puppeteer.launch(launchOptions);
     const page = await browser.newPage();
     await page.goto(url);
 
@@ -39,11 +62,12 @@ async function scrape(pool: Pool) {
      *  debugging is hard. 
      */
     try {
-        // Do stuff
+        // Do stuff ...
+        throw new Error('Error while scraping...');
     } catch (error) {
         if (error instanceof Error) {
             /** Save a screenshot if possible */
-            try { await page.screenshot({ path: `log/err-${new Date().getTime()}.png` }) } catch (error) {}
+            try { await page.screenshot({ path: `log/err-${new Date().getTime()}.png` }) } catch (error) { }
             console.error(error.message);
         }
     }
@@ -51,6 +75,7 @@ async function scrape(pool: Pool) {
     await browser.close();
 }
 
+/** Create MySQL connection pool so we can reuse connections */
 const pool: Pool = createPool(<PoolConfig>{
     host: process.env.HOST,
     user: process.env.USER,
@@ -59,9 +84,13 @@ const pool: Pool = createPool(<PoolConfig>{
     port: process.env.PORT
 });
 
-// Scrape every 15 minutes if production mode is enabled (https://crontab.guru is your best friend)
+/*
+ * Scrape every 15 minutes if production mode is enabled or once
+ * if not.
+ * (https://crontab.guru is your best friend)
+ */
 const interval = process.env.production ? '*/30 * * * *' : '* * * * *';
-console.log(`Scraping every ${process.env.production ? '15 minutes' : 'minute'}.`);
+console.log(`Scraping ${process.env.production ? 'every 30 minutes' : 'once.'}.`);
 
-if (!process.env.production) scrape(pool);
-schedule(interval, () => scrape(pool));
+if (!process.env.production) scrape(pool)
+else schedule(interval, () => scrape(pool));
