@@ -33,7 +33,7 @@ This advanced TypeScript Puppeteer web scraper template offers a comprehensive s
 ### Configuration
 
 1. Create thre three env files `.env`, `database.env` and `phpmyadmin.env` in the root directory.
-2. Add the necessary environment variables (as declared in the `*.env.example` files) to the `.env` files or environment variables.
+2. Add the necessary environment variables (as declared in the `template.*.env` files) to the `.env` files or environment variables.
 
 ### Local Usage
 
