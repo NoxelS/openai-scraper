@@ -1,41 +1,70 @@
-# TypeScript Openai Puppeteer Web Scraper Template
+# Advanced OpenAi TypeScript Puppeteer Web Scraper with MySQL Integration
 
-This is a template repository for building a web scraper using Openai, TypeScript and Puppeteer. With this template, you can quickly set up a project structure to scrape data, save it to a MySQL database and send emails with the data. This template is designed to be used with the [Openai](https://openai.com/) platform, but can be used with any other platform that supports TypeScript.
+This advanced TypeScript Puppeteer web scraper template offers a comprehensive solution for web scraping tasks, integrating Puppeteer with MySQL database and incorporating various Puppeteer plugins for enhanced functionality. Tailored for both development and production environments, this template extends beyond basic web scraping by offering features like automated scheduling, headless browser operation, and advanced error handling. It is perfect for developers seeking a robust and scalable web scraping setup.
+
+## Features
+
+- **Environment-Specific Configuration**: Leverages `.env` files for differentiating between development and production environments.
+- **Puppeteer Plugins Integration**: Includes plugins like `puppeteer-extra-plugin-anonymize-ua`, `puppeteer-extra-plugin-adblocker`, `puppeteer-extra-plugin-recaptcha`, and `puppeteer-extra-plugin-stealth` for enhanced scraping capabilities.
+- **Automated Scheduling**: Utilizes `node-cron` for scheduling scraping tasks, customizable for different intervals.
+- **MySQL Database Integration**: Features integration with MySQL using a connection pool for efficient data handling.
+- **Error Handling and Debugging**: Advanced error handling with screenshot capabilities for debugging, along with options to open devtools and slow down Puppeteer operations for detailed inspection.
 
 ## Getting Started
 
-To use this template, you can simply click the "Use this template" button on GitHub, or fork the repository to your own account.
+### Prerequisites
 
-Once you have the repository on your local machine, you can install the dependencies using Yarn or npm:
+- Node.js installed on your system
+- MySQL database setup
+- Yarn or npm for dependency management
 
-```sh
-yarn install
-# or
-npm install
-```
-To compile the scraper, you can use the start command:
+### Installation
 
-```sh
-npm run compile
-# or
-npm run dev-compile
-```
-To run the scraper, you can use the start command:
+1. Clone the repository or use the "Use this template" button on GitHub.
+2. Install the dependencies:
 
-```sh
-yarn start
-# or
-npm start
-```
+    ```sh
+    yarn install
+    # or
+    npm install
+    ```
 
-This will run the scraper.ts file, which contains the basic code to launch a headless browser and navigate to a web page. You can modify this file to add your own scraping logic.
+### Configuration
 
-## TypeScript Support
+1. Create a `.env` file in the root directory.
+2. Add the necessary environment variables (as declared in the `.env.example` file) to the `.env` file or environment variables (recommended).
 
-This template includes TypeScript support out of the box. You can write your scraping code in TypeScript and run it using the ts-node package.
-## Puppeteer
+### Usage
 
-This template includes the Puppeteer package, which provides a high-level API for controlling headless Chrome or Chromium. You can use Puppeteer to navigate web pages, interact with DOM elements, and extract data.
+- Compile the scraper:
+
+    ```sh
+    npm run compile
+    # or
+    npm run dev-compile # for continuous compilation
+    ```
+
+- Run the scraper:
+
+    ```sh
+    yarn start
+    # or
+    npm start
+    ```
+
+## TypeScript and Puppeteer Integration
+
+- **TypeScript Support**: Fully supported with TypeScript for type safety and easier code management.
+- **Puppeteer**: Control headless Chrome or Chromium for web page navigation, interaction, and data extraction.
+
+## Customizing the Scraper
+
+You can modify the `scrape` function in the `scraper.ts` file to add your custom scraping logic and interact with MySQL database.
+
 ## Contributing
 
-If you find any issues with this template, or have suggestions for improvement, please feel free to open an issue or a pull request. We welcome contributions from the community!
+Contributions are welcome! If you have suggestions for improvement or encounter any issues, feel free to open an issue or submit a pull request.
+
+---
+
+This template provides a solid foundation for building sophisticated web scrapers with TypeScript and Puppeteer, optimized for both development and production use. Enjoy your scraping journey!
