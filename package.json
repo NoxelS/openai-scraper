@@ -1,44 +1,42 @@
 {
-  "name": "scraper-template",
-  "version": "1.1.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "compile": "tsc",
-    "dev-compile": "tsc -w",
-    "start": "node ./dist/scraper.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/NoxelS/main-post-scraper.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/NoxelS/main-post-scraper/issues"
-  },
-  "homepage": "https://github.com/NoxelS/main-post-scraper#readme",
-  "dependencies": {
-    "@types/mysql": "^2.15.15",
-    "dotenv": "^8.2.0",
-    "gpt-3-encoder": "^1.1.4",
-    "mysql": "^2.18.1",
-    "node-cron": "^2.0.3",
-    "nodemailer": "^6.4.11",
-    "openai": "^3.2.1",
-    "puppeteer": "^5.2.1",
-    "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-adblocker": "^2.13.6",
-    "puppeteer-extra-plugin-anonymize-ua": "^2.4.6",
-    "puppeteer-extra-plugin-recaptcha": "^3.6.8",
-    "puppeteer-extra-plugin-stealth": "^2.11.2"
-  },
-  "devDependencies": {
-    "@types/dotenv": "^8.2.0",
-    "@types/node": "^14.6.0",
-    "@types/node-cron": "^2.0.3",
-    "@types/nodemailer": "^6.4.0",
-    "@types/puppeteer": "^3.0.1",
-    "typescript": "^4.0.2"
-  }
+    "name": "scraper-template",
+    "version": "1.1.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "compile": "tsc",
+        "dev-compile": "tsc -w",
+        "start": "node ./dist/scraper.js",
+        "start:prod": "node ./dist/scraper.js --mode production"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NoxelS/ultimate-scraper.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/NoxelS/ultimate-scraper/issues"
+    },
+    "homepage": "https://github.com/NoxelS/ultimate-scraper#readme",
+    "dependencies": {
+        "@types/mysql": "^2.15.15",
+        "@types/node": "^14.6.0",
+        "@types/node-cron": "^2.0.3",
+        "@types/nodemailer": "^6.4.0",
+        "@types/puppeteer": "^3.0.1",
+        "dotenv": "^8.2.0",
+        "gpt-3-encoder": "^1.1.4",
+        "mysql": "^2.18.1",
+        "node-cron": "^3.0.2",
+        "nodemailer": "^6.9.1",
+        "openai": "^3.2.1",
+        "puppeteer": "^21.10.0",
+        "puppeteer-extra": "^3.3.6",
+        "puppeteer-extra-plugin-adblocker": "^2.13.6",
+        "puppeteer-extra-plugin-anonymize-ua": "^2.4.6",
+        "puppeteer-extra-plugin-recaptcha": "^3.6.8",
+        "puppeteer-extra-plugin-stealth": "^2.11.2",
+        "typescript": "^4.0.2"
+    }
 }
