@@ -1,0 +1,44 @@
+version: '2'
+
+volumes:
+  scraper-db-data:
+  scraper-data:
+
+services:
+  scraper:
+    container_name: scraper
+    build: ./
+    depends_on:
+      - db
+    env_file:
+      - .env
+    volumes:
+      - scraper-data:/usr/src/app/data
+
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    depends_on:
+      - db
+    ports:
+      - 9999:80
+    expose:
+      - 9999
+    restart: always
+    env_file:
+      - database.env
+      - phpmyadmin.env
+
+  db:
+    container_name: scraper-db
+    image: mysql:latest
+    command:
+      --default-authentication-plugin=mysql_native_password
+    env_file:
+      - database.env
+    volumes:
+      - scraper-db-data:/var/lib/mysql
+    ports:
+      - 7706:3306
+    expose:
+      - 7706

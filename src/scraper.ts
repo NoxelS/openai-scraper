@@ -1,8 +1,10 @@
 import { config } from 'dotenv';
 import { createPool, Pool, PoolConfig } from 'mysql';
 import { schedule } from 'node-cron';
-import { LaunchOptions } from 'puppeteer';
+import { PuppeteerLaunchOptions } from 'puppeteer';
 import Puppeteer from 'puppeteer-extra';
+
+import { query } from './storage';
 
 
 /** Only use .env files when running in dev mode */
@@ -21,13 +23,13 @@ Puppeteer.use(AdblockerPlugin({ blockTrackers: true }));
 Puppeteer.use(StealthPlugin());
 
 /** Launch options */
-const launchOptions: LaunchOptions = {
+const launchOptions: PuppeteerLaunchOptions  = {
     headless: isProduction, // Run headless in production mode
     args: [
         '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox', '--no-sandbox',
         '--window-size=1920,1080', /* '--window-position=1920,0' */ // Activate this if you want to have the browser window on a second screen
     ],
-    ignoreHTTPSErrors: true, 
+    ignoreHTTPSErrors: true, // Ignore HTTPS errors
     devtools: !isProduction, // Open devtools in development mode
     slowMo: 0, // Slow down puppeteer operations by X milliseconds (useful for debugging)
     timeout: 0 // Disable timeouts
@@ -67,7 +69,7 @@ async function scrape(pool: Pool) {
     } catch (error) {
         if (error instanceof Error) {
             /** Save a screenshot if possible */
-            try { await page.screenshot({ path: `log/err-${new Date().getTime()}.png` }) } catch (error) { }
+            try { await page.screenshot({ path: `data/err-${new Date().getTime()}.png` }) } catch (error) { }
             console.error(error.message);
         }
     }
@@ -77,20 +79,23 @@ async function scrape(pool: Pool) {
 
 /** Create MySQL connection pool so we can reuse connections */
 const pool: Pool = createPool(<PoolConfig>{
-    host: process.env.HOST,
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
-    port: process.env.PORT
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_DATABASE,
+    port: process.env.DB_PORT
 });
+
+/* Test connection */
+query('SHOW TABLES FROM data;', [], (e, r) => {console.log(e ? e : `You have the following tables: ${r[0]}`);}, pool);
 
 /*
  * Scrape every 15 minutes if production mode is enabled or once
  * if not.
  * (https://crontab.guru is your best friend)
  */
-const interval = process.env.production ? '*/30 * * * *' : '* * * * *';
-console.log(`Scraping ${process.env.production ? 'every 30 minutes' : 'once.'}.`);
+const interval = isProduction ? '*/30 * * * *' : '* * * * *';
+console.log(`Scraping ${isProduction ? 'every 30 minutes' : 'once'} in ${isProduction ? 'production' : 'dev'} mode.`);
 
-if (!process.env.production) scrape(pool)
-else schedule(interval, () => scrape(pool));
+if (isProduction) schedule(interval, () => scrape(pool));
+else scrape(pool);

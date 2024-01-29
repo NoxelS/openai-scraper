@@ -4,11 +4,12 @@ This advanced TypeScript Puppeteer web scraper template offers a comprehensive s
 
 ## Features
 
-- **Environment-Specific Configuration**: Leverages `.env` files for differentiating between development and production environments.
 - **Puppeteer Plugins Integration**: Includes plugins like `puppeteer-extra-plugin-anonymize-ua`, `puppeteer-extra-plugin-adblocker`, `puppeteer-extra-plugin-recaptcha`, and `puppeteer-extra-plugin-stealth` for enhanced scraping capabilities.
 - **Automated Scheduling**: Utilizes `node-cron` for scheduling scraping tasks, customizable for different intervals.
+- **Environment-Specific Configuration**: Leverages `.env` files for differentiating between development and production environments.
 - **MySQL Database Integration**: Features integration with MySQL using a connection pool for efficient data handling.
 - **Error Handling and Debugging**: Advanced error handling with screenshot capabilities for debugging, along with options to open devtools and slow down Puppeteer operations for detailed inspection.
+- **Automated Deployment**: Includes a docker-compose file for automated deployment of the scraper. This will automatically build the scraper, a MySQL database, and a phpMyAdmin instance for database management.
 
 ## Getting Started
 
@@ -31,10 +32,10 @@ This advanced TypeScript Puppeteer web scraper template offers a comprehensive s
 
 ### Configuration
 
-1. Create a `.env` file in the root directory.
-2. Add the necessary environment variables (as declared in the `.env.example` file) to the `.env` file or environment variables (recommended).
+1. Create thre three env files `.env`, `database.env` and `phpmyadmin.env` in the root directory.
+2. Add the necessary environment variables (as declared in the `*.env.example` files) to the `.env` files or environment variables.
 
-### Usage
+### Local Usage
 
 - Compile the scraper:
 
@@ -51,6 +52,15 @@ This advanced TypeScript Puppeteer web scraper template offers a comprehensive s
     # or
     npm start
     ```
+
+### Docker Usage
+
+- Build the scraper, MySQL database, and phpMyAdmin instance:
+
+    ```sh
+    docker-compose up
+    ```
+    Make sure to add the necessary environment variables to the `database.env` and `phpmyadmin.env` files.
 
 ## TypeScript and Puppeteer Integration
 

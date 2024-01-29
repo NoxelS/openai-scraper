@@ -1,0 +1,2 @@
+This folder is mounted inside a volume, so it will be persisted even if the container is removed. This is useful for storing data
+that you want to keep between container restarts but don't want to store in the database.
